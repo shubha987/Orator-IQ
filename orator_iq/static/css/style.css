@@ -1,0 +1,81 @@
+body {
+   margin: 0;
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+     sans-serif;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+ }
+ 
+ code {
+   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+     monospace;
+ }
+ 
+ .font-link {
+   font-family: 'M PLUS Rounded 1c', cursive;
+ }
+ 
+ .footer {
+   width: 100%;
+   background-color: #dadada;
+   padding: 20px 0;
+ }
+ 
+ .footer .container {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+ }
+ 
+ .footer .gap-4 {
+   gap: 1rem;
+ }
+ 
+ .footer .gap-1 {
+   gap: 0.25rem;
+ }
+
+
+ 
+ .navbar-container {
+   background-color: #e5e8eb;
+   height: 70px;
+}
+
+.navbar-brand img {
+   height: 50px;
+}
+
+.navbar .btn {
+   margin-right: 10px;
+}
+
+.navbar .d-flex {
+   display: flex;
+   align-items: center;
+}
+
+.navbar .gap-4 {
+   gap: 20px;
+}
+
+.navbar .border-light {
+   border-color: #e5e8eb !important;
+}
+
+.navbar .rounded-2 {
+   border-radius: 0.25rem;
+}
+
+.navbar .fs-1 {
+   font-size: 1.5rem;
+}
+
+.navbar .font-weight-bold {
+   font-weight: bold;
+}
+
+.navbar .ml-3 {
+   margin-left: 1rem;
+}
