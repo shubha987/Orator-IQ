@@ -1,3 +1,4 @@
+# video_transcription.py
 import cv2
 import sounddevice as sd
 import queue
@@ -40,39 +41,41 @@ def transcribe_audio(audio_chunk):
     
     return transcription[0]
 
-def main():
-    # Open the Camera 
+def record_and_transcribe_video_audio(video_file_path, audio_file_path):
+    """
+    Record video, extract audio, and transcribe audio.
+    """
+    # Open the camera
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
-        print("Error: Could not open webcam.")
-        return
+        raise Exception("Error: Could not open webcam.")
 
     # Start Audio Stream
     with sd.InputStream(samplerate=samplerate, channels=1, callback=audio_callback):
         print("Recording video and audio. Press 'q' to stop.")
         
+        # Capture video and transcribe audio in real-time
+        transcription = ""
         while True:
-            # Capture video frame
             ret, frame = cap.read()
             if not ret:
                 break
 
+            # Show the video frame
             cv2.imshow("Real-Time Transcription", frame)
             
             # Process audio chunks for transcription
             if not audio_queue.empty():
                 audio_chunk = audio_queue.get()
                 try:
-                    transcription = transcribe_audio(audio_chunk)
-                    print("Transcription:", transcription)
+                    transcription += transcribe_audio(audio_chunk) + " "
                 except Exception as e:
                     print(f"Error during transcription: {e}")
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-    
+
     cap.release()
     cv2.destroyAllWindows()
 
-if __name__ == "__main__":
-    main()
+    return transcription
