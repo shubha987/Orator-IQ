@@ -1,0 +1,54 @@
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  blockquote{
+    font-size: 20px;
+    background: #f9f9f9;
+    border-left: 10px solid #ccc;
+    margin: .5em 10px;
+    padding: 0 10px;
+    padding: 10px 20px;
+    line-height: 1.4;
+  }
+  
+  blockquote:before {
+    display: inline;
+    height: 0;
+    line-height: 0;
+    left: -10px;
+    position: relative;
+    top: 30px;
+    color: #ccc;
+    font-size: 3em;
+  }
+
+
+/* The alert message box */
+.Won {
+    padding: 20px;
+    background-color: #06203f; /* Green */
+    color: white;
+    width: 500px;
+    margin: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .Lost {
+    padding: 20px;
+    background-color: #06203f; /* Green */
+    color: white;
+    width: 500px;
+    margin: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  
