@@ -129,7 +129,7 @@ if media_type == "Video":
 
     if st.session_state.recording:
         stframe = st.empty()
-        cap = cv2.VideoCapture("http://192.168.32.1:8080/?action=stream")
+        cap = cv2.VideoCapture(0)
         
         if not cap.isOpened():
             st.error("Could not open video device")
