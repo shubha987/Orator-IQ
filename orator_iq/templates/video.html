@@ -69,7 +69,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
     <script>
         let mediaRecorder;
-        let recordedBlobs;
+        let recordedBlobs = [];
+        let socket = new WebSocket('ws://' + window.location.host + '/video/');
 
         document.getElementById('startRecording').addEventListener('click', async () => {
             const constraints = {
@@ -94,7 +95,6 @@
             video.srcObject = stream;
 
             const options = { mimeType: 'video/webm;codecs=vp9' };
-            recordedBlobs = [];
             mediaRecorder = new MediaRecorder(stream, options);
 
             mediaRecorder.ondataavailable = handleDataAvailable;
@@ -121,25 +121,24 @@
             document.getElementById('startRecording').disabled = false;
             document.getElementById('stopRecording').disabled = true;
 
-            // Send the recorded video to the server
-            const formData = new FormData();
-            formData.append('video', superBuffer, 'recorded_video.webm');
-
-            fetch('/save_video/', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+            // Send the recorded video to the server via WebSocket
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                socket.send(JSON.stringify({
+                    'video': event.target.result.split(',')[1]
+                }));
+            };
+            reader.readAsDataURL(superBuffer);
         }
+
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            console.log('Success:', data);
+        };
+
+        socket.onerror = function(error) {
+            console.error('WebSocket error:', error);
+        };
     </script>
 </body>
 
