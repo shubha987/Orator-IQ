@@ -3,14 +3,13 @@ import cv2
 import numpy as np
 import tempfile
 import os
-import base64
 from datetime import datetime
 import whisper
 import language_tool_python
 from nltk.corpus import cmudict
 from pydub import AudioSegment, silence
-import sounddevice as sd
-from scipy.io.wavfile import write
+import pyaudio
+import wave
 import noisereduce as nr
 import librosa
 import soundfile as sf
@@ -95,6 +94,27 @@ def calculate_snr(audio_file):
     noise = np.var(samples)
     snr = 10 * np.log10(signal / noise)
     return snr
+
+# Function to record audio using pyaudio
+def record_audio(output_file, duration=10, fs=44100):
+    p = pyaudio.PyAudio()
+    stream = p.open(format=pyaudio.paInt16, channels=2, rate=fs, input=True, frames_per_buffer=1024)
+    frames = []
+
+    for _ in range(0, int(fs / 1024 * duration)):
+        data = stream.read(1024)
+        frames.append(data)
+
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
+
+    wf = wave.open(output_file, 'wb')
+    wf.setnchannels(2)
+    wf.setsampwidth(p.get_sample_size(pyaudio.paInt16))
+    wf.setframerate(fs)
+    wf.writeframes(b''.join(frames))
+    wf.close()
 
 # Streamlit app
 st.title("AI Interview - Video & Audio Recorder")
@@ -195,11 +215,7 @@ elif media_type == "Audio":
 
     if st.button("Start Recording", key="start_audio"):
         with st.spinner('Recording audio for 10 seconds...'):
-            fs = 44100
-            duration = 10
-            recording = sd.rec(int(duration * fs), samplerate=fs, channels=2)
-            sd.wait()
-            write(audio_path, fs, recording)
+            record_audio(audio_path, duration=10)
             
             st.audio(audio_path)
             
